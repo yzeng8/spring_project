@@ -11,10 +11,11 @@ public interface AccountDao {
     //@Select("select * from tbl_account")
 
     public List<Account> findAll();
-    public Account findById(int id);
+    public List<Account> findById(int id);
     public int insert(Account account);
 
     public int deleteById(int id);
 
     public int update(Account account);
+    public List<Account> findByName(String name);
 }

@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
         return accountDao.findAll();
     }
 
-    public Account findById(int id) {
+    public List<Account> findById(int id) {
         return accountDao.findById(id);
     }
 
@@ -33,4 +33,9 @@ public class AccountServiceImpl implements AccountService {
     public int updateAccount(Account account) {
         return accountDao.update(account);
     }
+
+    public List<Account> findByName(String name) {
+        return accountDao.findByName(name);
+    }
+
 }

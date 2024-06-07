@@ -5,7 +5,10 @@ import com.yonyou.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
@@ -14,36 +17,56 @@ public class UserController {
     private AccountServiceImpl accountServiceImpl;
 
     @GetMapping
-    public List<Account> getAccount() {
-
+    public Map<String,Object> getAccount() {
+        //int i = 1/0;  //异常检测
         List<Account> accounts= accountServiceImpl.findAll();
-        return accounts;
+        Map<String,Object> result=new HashMap<>();
+        result.put("data",accounts);
+        result.put("msg","数据获取成功");
+        return result;
     }
 
     @GetMapping({"/{id}"})
-    public Account getAccountById(@PathVariable int id) {
+    public Map<String,Object> getAccountById(@PathVariable int id) {
         System.out.println("id->:"+id);
-        Account account= accountServiceImpl.findById(id);
-        return account;
+        List<Account> accounts= accountServiceImpl.findById(id);
+        Map<String,Object> result=new HashMap<>();
+        result.put("data",accounts);
+        result.put("msg","数据获取成功");
+        return result;
     }
 
     @PostMapping
-    public String addAccount(@RequestBody Account account) {
+    public Map<String,Object> addAccount(@RequestBody Account account) {
         int num_row = accountServiceImpl.insert(account);
-        return ("插入成功,"+ num_row);
+
+        List<Account> accounts= accountServiceImpl.findByName(account.getName());
+        Map<String,Object> result=new HashMap<>();
+        result.put("data",accounts);
+        result.put("msg","数据插入成功,插入数据如下:");
+        return result;
     }
 
     @DeleteMapping({"/{id}"})
-    public String deleteAccount(@PathVariable int id) {
+    public Map<String,Object> deleteAccount(@PathVariable int id) {
         System.out.println("id->:"+id);
+        List<Account> accounts = accountServiceImpl.findById(id);
         int num_row = accountServiceImpl.deleteById(id);
-        return "删除成功";
+        Map<String,Object> result=new HashMap<>();
+        result.put("data",accounts);
+        result.put("msg","数据删除成功,插入数据如下:");
+        return result;
     }
 
     @PutMapping
-    public String updateAccount(@RequestBody Account account) {
+    public Map<String,Object> updateAccount(@RequestBody Account account) {
         //System.out.println("id->:"+id);
         int num_row = accountServiceImpl.updateAccount(account);
-        return "修改成功";
+        List<Account> accounts= new ArrayList<>();
+        accounts.add(account);
+        Map<String,Object> result=new HashMap<>();
+        result.put("data",accounts);
+        result.put("msg","数据修改成功,修改数据如下:");
+        return result;
     }
 }

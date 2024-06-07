@@ -12,6 +12,10 @@
     <select id="findById" resultType="com.yonyou.domain.Account">
         SELECT * FROM tbl_account where id = #{id};
     </select>
+    <select id="findByName" resultType="com.yonyou.domain.Account">
+        SELECT * FROM tbl_account where name = #{name};
+
+    </select>
     <insert id="insert">
         INSERT INTO tbl_account (name, money)
         VALUES (#{name}, #{money});
@@ -19,6 +23,7 @@
     <delete id="deleteById">
         DELETE FROM tbl_account where id = #{id};
     </delete>
+
 
 
     <update id="update">
