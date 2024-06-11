@@ -1,6 +1,8 @@
 package com.yonyou.controller;
 
 import com.yonyou.domain.Account;
+import com.yonyou.exception.BusinessException;
+import com.yonyou.exception.SystemException;
 import com.yonyou.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +31,26 @@ public class UserController {
     @GetMapping({"/{id}"})
     public Map<String,Object> getAccountById(@PathVariable int id) {
         System.out.println("id->:"+id);
-        List<Account> accounts= accountServiceImpl.findById(id);
-        Map<String,Object> result=new HashMap<>();
-        result.put("data",accounts);
-        result.put("msg","数据获取成功");
-        return result;
+        if (id<1){
+            throw new BusinessException(Code.Bussiness_ERR,"数据接受异常！");
+        }
+
+            try{
+
+
+                //int i = 1/0;
+                List<Account> accounts= accountServiceImpl.findById(id);
+                Map<String,Object> result=new HashMap<>();
+                result.put("data",accounts);
+                result.put("msg","数据获取成功");
+                return result;
+            }
+            catch (Exception e){
+                throw new SystemException(Code.SYSTEM_ERR,"数据输入异常!");
+            }
+
+
+
     }
 
     @PostMapping
